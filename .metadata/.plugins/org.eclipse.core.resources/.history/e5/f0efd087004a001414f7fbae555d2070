@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app= "http://schemas.android.com/apk/res/com.mobisys.android.uipickerview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+        <com.mobisys.android.uipickerview.UiPickerView android:id="@+id/app"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:positiveButtonTextColor="@color/Acquamarine"
+            app:negativeButtonTextColor="@color/Acquamarine"
+            app:titleTextColor="@color/red"
+            app:pickerType="date"
+            app:titleBackgroundColor="@color/pink"
+            app:selectedItemTextColor="@color/pink"
+            app:itemsTextColor="@color/pink"
+            app:selectedDrawable="@android:drawable/list_selector_background"
+            app:pickerBackgroungColor="@color/pink"
+            android:layout_marginTop="8dp"
+            android:text="Custom Button"/>
+</LinearLayout>

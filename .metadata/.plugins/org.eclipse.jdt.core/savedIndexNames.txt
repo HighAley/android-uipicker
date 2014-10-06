@@ -1,0 +1,7 @@
+INDEX VERSION 1.126+D:\Work\Android\uipicker\.metadata\.plugins\org.eclipse.jdt.core
+1284074322.index
+3835501021.index
+1041175205.index
+941220827.index
+4127445122.index
+722644719.index

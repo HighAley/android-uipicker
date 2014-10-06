@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_color">#8666b2</color>
+    <color name="main_color_transparent">#cc8666b2</color>
+    <color name="main_color_light">#f6f0fb</color>
+    <color name="main_color_gray">#f3f3f3</color>
+    <color name="main_color_text">#a28ac3</color>
+    <color name="main_color_disabled">#c2b2d8</color> 
+    <color name="main_color_blackish">#7e628d</color>
+    <color name="main_bg">#f6f0fb</color>
+    <color name="sliding_menu_bg">#e0e2e6</color>
+    <color name="sliding_menu_header_bg">#f2f3f4</color>
+    <color name="actionbar_blue">#5fb0d2</color>
+    <color name="title_color">#7e89a5</color>
+    <color name="white_transparent">#18ffffff</color>
+    <color name="white_transparent_tile">#40ffffff</color>
+    <color name="black_transparent">#18000000</color>
+    <color name="white">@android:color/white</color>
+    <color name="black">@android:color/black</color>
+    <color name="divider_dark_gray">#aaaaaa</color>
+    <color name="divider_light_gray">#cccccc</color>
+    <color name="red_text">#ce1100</color>
+    <color name="darker_gray_bg">#cccccc</color>
+    <color name="black_text">#555555</color>
+    <color name="gray_text">#999999</color>
+    <color name="label">#8690ab</color>
+    <color name="pink">#c05c99</color>
+    <color name="transparent_pink">#885473</color>
+    <color name="red">#df2056</color>
+    <color name="tile0">#d25945</color>
+    <color name="tile1">#c3a165</color>
+    <color name="tile2">#629b6e</color>
+    <color name="tile3">#d58b8b</color>
+    <color name="tile4">#8666b2</color>
+    <color name="tile5">#65b3b9</color>
+    <color name="tile0_pressed">#915349</color>
+    <color name="tile1_pressed">#897759</color>
+    <color name="tile2_pressed">#59745d</color>
+    <color name="tile3_pressed">#926c6c</color>
+    <color name="tile5_pressed">#5a8083</color>
+    <color name="menu_separator">#191918</color>
+    <color name="menu_bg">#1c1c1b</color>
+    <color name="transparent_black">#30000000</color>
+    <color name="btn_bg">#30000000</color>
+    
+    <color name="wheel_sel_text_color">#8666b2</color>
+    <color name="wheel_unsel_text_color">#508666b2</color>
+    
+    <color name="chart_color1">#6a4e78</color>
+    <color name="chart_color2">#b48f57</color>
+    <color name="chart_color3">#c34139</color>
+    <color name="chart_color4">#caaa27</color>
+    <color name="chart_color5">#528b5b</color>
+    <color name="chart_color6">#bb8327</color>
+    <color name="chart_color7">#6394ec</color>
+    <color name="Acquamarine">#7FFFD4</color>
+</resources>

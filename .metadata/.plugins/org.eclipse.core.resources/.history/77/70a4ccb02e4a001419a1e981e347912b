@@ -1,0 +1,377 @@
+package com.mobisys.android.uipickerview;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
+import kankan.wheel.widget.OnWheelScrollListener;
+import kankan.wheel.widget.WheelView;
+import kankan.wheel.widget.adapters.AbstractWheelHighlightTextAdapter;
+import kankan.wheel.widget.adapters.NumericWheelAdapter;
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.example.pickerdialog.R;
+import com.example.pickerdialog.R.color;
+
+
+@SuppressLint("InflateParams")
+public class DialogUtil {
+	private static SimpleDateFormat PARAM_SDF = new SimpleDateFormat("dd MMM yyyy", Locale.US);
+
+	public static interface CalendarDialogListener {
+		public void onSaveClick(Dialog dialog, Calendar selected_cal);
+		
+		public void onCancelClick(Dialog dialog);
+	}
+	
+	public static interface StringDialogListener {
+		public void onSaveClick(Dialog dialog, int position, String selectedString);
+		
+		public void onCancelClick(Dialog dialog);
+	}
+	
+	public static interface IntegerDialogListener {
+		public void onSaveClick(Dialog dialog, int position, String selectedString);
+		
+		public void onCancelClick(Dialog dialog);
+	}
+	
+	public static void showDateTimeDialog(final Context context,final int buttonTextColor,final int titleTextColor,final int titleBGColor,final int selectedItemTextColor,final int itemTextColor,final int pickerBGColor,final Drawable pickerBGDrawable,String type,String title, final CalendarDialogListener save_listener) {
+		
+		final Dialog dialog = new Dialog(context,R.style.DialogSlideAnim);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_date_time);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+        p.width = LayoutParams.MATCH_PARENT;   
+        p.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(p);
+        
+        //set Titlebar
+        ((TextView)dialog.findViewById(R.id.title)).setText(Constants.HOUR_SDF.format(Calendar.getInstance().getTime()));
+        ((TextView)dialog.findViewById(R.id.type)).setVisibility(View.VISIBLE);
+        ((TextView)dialog.findViewById(R.id.type)).setText(title);
+        ((RelativeLayout)dialog.findViewById(R.id.layout_titlebar)).setBackgroundColor(titleBGColor);
+        
+        WheelView.setBGimg(pickerBGDrawable);
+        final Calendar calendar = Calendar.getInstance();
+        final WheelView hours = (WheelView) dialog.findViewById(R.id.hour);
+        NumericWheelAdapter hourAdapter = new NumericWheelAdapter(context, hours,selectedItemTextColor,itemTextColor, 1, 12);
+       // AppUtil.configureWheelAdapter(context, hourAdapter);
+        hours.setViewAdapter(hourAdapter);
+   
+        final WheelView mins = (WheelView) dialog.findViewById(R.id.mins);
+        NumericWheelAdapter minAdapter = new NumericWheelAdapter(context,mins,selectedItemTextColor,itemTextColor, 0, 59, "%02d");
+       // AppUtil.configureWheelAdapter(context, minAdapter);
+        mins.setViewAdapter(minAdapter);
+        mins.setCyclic(true);
+       
+        // set current timeif
+        int hrIndex=0;
+        if(calendar.get(Calendar.HOUR_OF_DAY)>12) hrIndex=calendar.get(Calendar.HOUR_OF_DAY)-13;
+        else hrIndex=calendar.get(Calendar.HOUR_OF_DAY)-1;
+        hours.setCurrentItem(hrIndex);
+        hours.setCyclic(true);
+        mins.setCurrentItem(calendar.get(Calendar.MINUTE));
+        
+        final WheelView day = (WheelView) dialog.findViewById(R.id.day);
+        final DayArrayAdapter adapter = new DayArrayAdapter(context, day,selectedItemTextColor,itemTextColor, calendar);
+        day.setViewAdapter(adapter);
+        day.setCurrentItem(adapter.getItemsCount()/2);
+        
+        String amPm[]=context.getResources().getStringArray(R.array.arrays_am_pm);
+        final WheelView am_pm=(WheelView) dialog.findViewById(R.id.am_pm);
+        final WheelTextAdapter amPmTextAdapter=new WheelTextAdapter(context, am_pm,selectedItemTextColor,itemTextColor, amPm);
+       // AppUtil.configureWheelAdapter(context, amPmTextAdapter);
+        am_pm.setViewAdapter(amPmTextAdapter);
+        
+        if(calendar.get(Calendar.HOUR_OF_DAY)>12) am_pm.setCurrentItem(1);//PM
+        else am_pm.setCurrentItem(0);//AM
+        ((Button)dialog.findViewById(R.id.btn_save)).setTextColor(buttonTextColor);
+        dialog.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			 public void onClick(View v) {
+				int d = -adapter.daysCount/2 + day.getCurrentItem();
+				Calendar newCalendar = (Calendar)calendar.clone();
+				newCalendar.add(Calendar.DAY_OF_YEAR, d);
+				int hr=am_pm.getCurrentItem()==0?(hours.getCurrentItem()+1):(hours.getCurrentItem()+13);
+				if(hours.getCurrentItem()==11) hr=hr-12;
+				
+				newCalendar.set(newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH), hr, mins.getCurrentItem());
+				if(save_listener!=null) save_listener.onSaveClick(dialog, newCalendar);
+			 }
+		});
+        ((Button)dialog.findViewById(R.id.btn_cancel)).setTextColor(buttonTextColor);
+        dialog.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				if(save_listener!=null) save_listener.onCancelClick(dialog);
+			}
+		});
+        OnWheelScrollListener listener=new OnWheelScrollListener() {
+			
+			@Override
+			public void onScrollingStarted(WheelView wheel) {
+			}
+			
+			@Override
+			public void onScrollingFinished(WheelView wheel) {
+				int d = -adapter.daysCount/2 + day.getCurrentItem();
+				Calendar newCalendar = (Calendar)calendar.clone();
+				newCalendar.add(Calendar.DAY_OF_YEAR, d);
+				int hr=am_pm.getCurrentItem()==0?(hours.getCurrentItem()+1):(hours.getCurrentItem()+13);
+				if(hours.getCurrentItem()==11) hr=hr-12;
+				
+				newCalendar.set(newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH), hr, mins.getCurrentItem());
+				((TextView)dialog.findViewById(R.id.title)).setText(Constants.HOUR_SDF.format(newCalendar.getTime()));
+				((TextView)dialog.findViewById(R.id.title)).setTextColor(titleTextColor);
+			}
+		};
+		
+		day.addScrollingListener(listener);
+		hours.addScrollingListener(listener);
+		mins.addScrollingListener(listener);
+		am_pm.addScrollingListener(listener);
+		dialog.show();
+	}
+	
+	public static void showDateDialog(final Context context,final int buttonTextColor,final int titleTextColor,final int titleBGColor,final int selectedItemTextColor,final int itemTextColor,final int pickerBGColor,final Drawable pickerBGDrawable,String type,final  int minYear, final CalendarDialogListener selectListener) {
+		final Dialog dialog = new Dialog(context,R.style.DialogSlideAnim);
+		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+   	 	final View dialogView=inflater.inflate(R.layout.dialog_date,null);
+   	 	//dialogView.setBackgroundColor(pickerBGColor);
+   	    WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	    dialog.setContentView(dialogView);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        p.width = LayoutParams.MATCH_PARENT;   
+        p.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(p);
+        WheelView.setBGimg(pickerBGDrawable);
+        final Calendar calendar = Calendar.getInstance();
+        final WheelView day = (WheelView) dialogView.findViewById(R.id.day);
+        NumericWheelAdapter dayAdapter = new NumericWheelAdapter(context,day,selectedItemTextColor,itemTextColor ,1, 31);
+        // AppUtil.configureWheelAdapter(context, dayAdapter);
+        day.setViewAdapter(dayAdapter);
+        day.setCyclic(true);
+        day.setCurrentItem(calendar.get(Calendar.DAY_OF_MONTH));
+        
+        ((RelativeLayout)dialog.findViewById(R.id.layout_titlebar)).setBackgroundColor(titleBGColor);
+        final WheelView year = (WheelView) dialogView.findViewById(R.id.year);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        final NumericWheelAdapter yearAdapter = new NumericWheelAdapter(context, year,selectedItemTextColor,itemTextColor, minYear, currentYear);
+       // AppUtil.configureWheelAdapter(context, yearAdapter);
+        year.setViewAdapter(yearAdapter);
+        year.setCyclic(true);
+       
+        // set current time
+        day.setCurrentItem(calendar.get(Calendar.DAY_OF_MONTH)-1);
+        year.setCurrentItem(currentYear-minYear);
+
+        final WheelView month = (WheelView) dialogView.findViewById(R.id.month);
+        final MonthArrayAdapter adapter = new MonthArrayAdapter(context, month,selectedItemTextColor,itemTextColor,context.getResources().getStringArray(R.array.array_months));
+        //AppUtil.configureWheelAdapter(context, adapter);
+        month.setViewAdapter(adapter);
+        month.setCurrentItem(calendar.get(Calendar.MONTH));
+        month.setCyclic(true);
+		((TextView)dialogView.findViewById(R.id.title)).setText(PARAM_SDF.format(calendar.getTime()));
+        dialog.show();
+        ((Button)dialogView.findViewById(R.id.btn_save)).setTextColor(buttonTextColor);
+        dialogView.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				int selectedYear=Integer.parseInt(yearAdapter.getItemText(year.getCurrentItem()).toString());
+				GregorianCalendar newCalendar=new GregorianCalendar(selectedYear, month.getCurrentItem(), day.getCurrentItem()+1);
+				Log.d("FilterActivity", "Date: "+newCalendar.getTime().toString());
+				if(selectListener!=null) selectListener.onSaveClick(dialog, newCalendar);
+				dialog.dismiss();
+			}
+		});
+        ((Button)dialogView.findViewById(R.id.btn_cancel)).setTextColor(buttonTextColor);
+        dialogView.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+        
+        OnWheelScrollListener listener=new OnWheelScrollListener() {
+			
+			@Override
+			public void onScrollingStarted(WheelView wheel) {
+			}
+			
+			@Override
+			public void onScrollingFinished(WheelView wheel) {
+				int selectedYear=Integer.parseInt(yearAdapter.getItemText(year.getCurrentItem()).toString());
+				GregorianCalendar newCalendar=new GregorianCalendar(selectedYear, month.getCurrentItem(), day.getCurrentItem()+1);
+				((TextView)dialogView.findViewById(R.id.title)).setTextColor(titleTextColor);
+				((TextView)dialogView.findViewById(R.id.title)).setText(PARAM_SDF.format(newCalendar.getTime()));
+			}
+		};
+		day.addScrollingListener(listener);
+		month.addScrollingListener(listener);
+		year.addScrollingListener(listener);
+	}
+	
+	
+	/*public static void showStringDialog(final Context context,final int[] colors, final String[] stringArray, final StringDialogListener selectListener) {
+		final Dialog dialog = new Dialog(context,R.style.DialogSlideAnim);
+		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+   	 	final View dialogView=inflater.inflate(R.layout.dialog_string,null);
+   	    WindowManager.LayoutParams p = dialog.getWindow().getAttributes();
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	    dialog.setContentView(dialogView);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        p.width = LayoutParams.MATCH_PARENT;   
+        p.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(p);
+        
+        ((Button)dialogView.findViewById(R.id.btn_save)).setTextColor(context.getResources().getColor(colors[0]));
+        ((Button)dialogView.findViewById(R.id.btn_cancel)).setTextColor(context.getResources().getColor(colors[0]));
+        
+        final WheelView stringWheel = (WheelView) dialogView.findViewById(R.id.arrayString);
+        WheelTextAdapter stringAdapter = new WheelTextAdapter(context, stringWheel, stringArray);
+        stringWheel.setViewAdapter(stringAdapter);
+        stringWheel.setCyclic(false);
+        stringWheel.setCurrentItem(0);
+        dialog.show();
+        
+        dialogView.findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				int position = stringWheel.getCurrentItem();
+				String selectedString = stringArray[position];
+				if(selectListener!=null) selectListener.onSaveClick(dialog, position, selectedString);
+				dialog.dismiss();
+			}
+		});
+        dialogView.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
+		});
+        
+        OnWheelScrollListener listener=new OnWheelScrollListener() {
+			
+			@Override
+			public void onScrollingStarted(WheelView wheel) {
+			}
+			
+			@Override
+			public void onScrollingFinished(WheelView wheel) {
+				int position = stringWheel.getCurrentItem();
+				String selectedString = stringArray[position];
+				((TextView)dialogView.findViewById(R.id.title)).setText(selectedString);
+				((TextView)dialogView.findViewById(R.id.title)).setTextColor(context.getResources().getColor(colors[1]));
+				
+			}
+		};
+		stringWheel.addScrollingListener(listener);
+	}*/
+	
+	@SuppressLint("SimpleDateFormat")
+	public static class DayArrayAdapter extends AbstractWheelHighlightTextAdapter {
+        // Count of days to be shown
+        private final int daysCount = 364;
+       
+        // Calendar
+        Calendar calendar;
+       
+        /**
+         * Constructor
+         */
+        protected DayArrayAdapter(Context context, WheelView wheelView,int selectedItemTextColor,int itemTextColor ,Calendar calendar) {
+            super(context, wheelView,selectedItemTextColor,itemTextColor);
+           // AppUtil.configureWheelAdapter(context, this);
+            this.calendar = calendar;
+           
+            //setItemTextResource(R.id.time2_monthday);
+        }
+       
+        @Override
+        public int getItemsCount() {
+            return daysCount + 1;
+        }
+       
+        @Override
+        protected CharSequence getItemText(int index) {
+            int day = -daysCount/2 + index;
+            Calendar newCalendar = (Calendar) calendar.clone();
+            newCalendar.add(Calendar.DAY_OF_YEAR, day);
+           
+            DateFormat format = new SimpleDateFormat("EEE MMM d");
+            if(day==0) return "Today";
+            else return format.format(newCalendar.getTime());
+        }
+    }
+
+	public static class MonthArrayAdapter extends AbstractWheelHighlightTextAdapter {
+        String months[];//=getResources().getStringArray(R.array.array_months);
+		/**
+         * Constructor
+         */
+        protected MonthArrayAdapter(Context context, WheelView wheelView,int selectedTextColor,int itemTextColor, String months[]) {
+            super(context, wheelView,selectedTextColor,itemTextColor);
+           this.months=months;
+        }
+
+        @Override
+        public int getItemsCount() {
+            return 12;
+        }
+       
+        @Override
+        protected CharSequence getItemText(int index) {
+            return months[index];
+        }
+    }
+	
+	public static class WheelTextAdapter extends AbstractWheelHighlightTextAdapter {
+        String numbers[];
+        int txtcolor=color.red;
+		/**
+         * Constructor
+         */
+        public WheelTextAdapter(Context context, WheelView wheelView,int selectedItemTextColor,int itemTextColor, String numbers[]) {
+           super(context, wheelView,selectedItemTextColor,itemTextColor);
+          // super.setTextColor(context.getResources().getColor(R.color.gray_text));
+           this.numbers=numbers;
+        }
+
+        
+		@Override
+        public int getItemsCount() {
+            return numbers.length;
+        }
+       
+        @Override
+        protected CharSequence getItemText(int index) {
+            return numbers[index];
+        }
+        
+    }
+
+	
+}

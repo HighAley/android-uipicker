@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_baby_drinks">
+        <item >Select from</item>
+	    <item >Breast Milk</item>
+	    <item >Bottle Milk</item>
+	    <item >Both</item>
+	</string-array>
+    <string-array name="array_months">
+        <item>January</item>
+        <item >February</item>
+        <item >March</item>
+        <item >April</item>
+        <item >May</item>
+        <item >June</item>
+        <item >July</item>
+        <item >August</item>
+        <item >September</item>
+        <item >October</item>
+        <item >November</item>
+        <item >December</item>
+    </string-array>
+    <string-array name="home_screen_options">
+        <item>BATH</item>
+        <item >BOTTLE</item>
+        <item >NURSING</item>
+        <item >PUMP</item>
+        <item >SLEEP</item>
+        <item >DIAPER</item>
+    </string-array>
+    <string-array name="arrays_decimal">
+        <item>0</item>
+        <item>25</item>
+        <item>50</item>
+        <item>75</item>
+    </string-array>
+    <string-array name="arrays_am_pm">
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
+    <string-array name="array_association">
+        <item >Select from</item>
+        <item >Mother</item>
+        <item >Father</item>
+        <item >Babysitter</item>
+        <item >Day Care</item>
+    </string-array>
+    <string-array name="array_consistency">
+        <item>Select From</item>
+        <item>Normal</item>
+        <item>Diarrhea</item>
+        <item>Runny</item>
+        <item>Hard</item>
+        <item>Little Pebbles</item>
+        <item>Meconium</item>
+        <item>Mucus</item>
+    </string-array>
+    <string-array name="array_color">
+        <item>Select From</item>
+        <item>Dark Brown</item>
+        <item>Light Brown</item>
+        <item>Black</item>
+        <item>Green</item>
+        <item>Mustured</item>
+        <item>Orange</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Yellow</item>
+    </string-array>
+    <array name="tile_background">
+        <item >@color/tile0</item>
+        <item>R.darwable.btn_yellow_selector</item>
+        <item>@color/tile2</item>
+        <item>@color/main_color</item>
+    </array>
+    <string-array name="array_quantity_unit">
+        <item>Oz</item>
+        <item>Gram</item>
+    </string-array>
+    <string-array name="array_support_type">
+        <item >Issue</item>
+	    <item >Comment</item>
+	    <item >Feature Request</item>
+	</string-array>
+	<array name="colors">
+        <item>#FFFF0000</item>
+        <item>#FF00FF00</item>
+        <item>#FF0000FF</item>
+    </array>
+</resources>

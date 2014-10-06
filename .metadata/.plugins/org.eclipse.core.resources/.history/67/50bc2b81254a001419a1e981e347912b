@@ -1,0 +1,158 @@
+package com.mobisys.android.uipickerview;
+
+
+import java.util.Calendar;
+
+import com.example.pickerdialog.R;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
+
+public class UiPickerView extends Button {
+
+	//Default values
+	private Context mContext;
+	private static final int DAFAULT_BUTTON_TEXT_COLOR=-10506030;
+	private static final int DAFAULT_TITLE_TEXT_COLOR=-2154410;
+	private static final int DAFAULT_TITLE_BG_COLOR=-4170599;
+	private static final int DAFAULT_SELECTDITEM_TEXT_COLOR=-10506030;
+	private static final int DAFAULT_ITEM_TEXT_COLOR=-4170599;
+	private static final int DAFAULT_PICKER_BG_COLOR=-10506030;
+	private static final String DAFAULT_TYPE="Date";
+	
+	//Main variables
+	private int mButtonTextColor=DAFAULT_BUTTON_TEXT_COLOR;
+	private int mTitleTextColor=DAFAULT_TITLE_TEXT_COLOR;
+	private int mTitleBGColor=DAFAULT_TITLE_BG_COLOR;
+	private int mSelectedItemTextColor=DAFAULT_SELECTDITEM_TEXT_COLOR;
+	private int mItemTextColor=DAFAULT_ITEM_TEXT_COLOR;
+	private int mPickerBGColor=DAFAULT_PICKER_BG_COLOR;
+	private Drawable mPickerBGDrawable;
+	private String mType=DAFAULT_TYPE;
+	private TypedArray mTypedArray;
+	public UiPickerView(Context context) {
+		super(context);
+		setClickListener();
+	}
+	
+	public UiPickerView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		mContext=context;
+		initStyleButton(attrs);
+		setClickListener();
+	}
+
+	public UiPickerView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		mContext=context;
+		initStyleButton(attrs);
+		setClickListener();
+	}
+		 
+	public void initStyleButton(AttributeSet attrs){
+		 mTypedArray = getContext().obtainStyledAttributes(attrs,R.styleable.UiPickerView);
+		 mButtonTextColor=mTypedArray.getColor(R.styleable.UiPickerView_positiveButtonTextColor,DAFAULT_BUTTON_TEXT_COLOR);
+		 mTitleTextColor=mTypedArray.getColor(R.styleable.UiPickerView_titleTextColor,DAFAULT_TITLE_TEXT_COLOR);
+		 mTitleBGColor=mTypedArray.getColor(R.styleable.UiPickerView_titleBackgroundColor,DAFAULT_TITLE_BG_COLOR);
+		 mSelectedItemTextColor=mTypedArray.getColor(R.styleable.UiPickerView_selectedItemTextColor,DAFAULT_SELECTDITEM_TEXT_COLOR);
+		 mItemTextColor=mTypedArray.getColor(R.styleable.UiPickerView_itemsTextColor,DAFAULT_ITEM_TEXT_COLOR);
+		 mPickerBGColor=mTypedArray.getColor(R.styleable.UiPickerView_pickerBackgroungColor,DAFAULT_PICKER_BG_COLOR);
+		 mPickerBGDrawable=mTypedArray.getDrawable(R.styleable.UiPickerView_selectedDrawable);
+		 mType=mTypedArray.getString(R.styleable.UiPickerView_pickerType);
+		 
+		 
+		 mTypedArray.recycle();
+	}
+
+	private void setClickListener(){
+		
+		this.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				switch(mTypedArray.getInt(R.styleable.UiPickerView_pickerType,0)){
+				
+				}
+				
+			}
+		});
+	}
+	
+	public Context getmContext() {
+		return mContext;
+	}
+
+	public void setmContext(Context mContext) {
+		this.mContext = mContext;
+	}
+
+	public int getmButtonTextColor() {
+		return mButtonTextColor;
+	}
+
+	public void setmButtonTextColor(int mButtonTextColor) {
+		this.mButtonTextColor = mButtonTextColor;
+	}
+
+	public int getmTitleTextColor() {
+		return mTitleTextColor;
+	}
+
+	public void setmTitleTextColor(int mTitleTextColor) {
+		this.mTitleTextColor = mTitleTextColor;
+	}
+
+	public int getmTitleBGColor() {
+		return mTitleBGColor;
+	}
+
+	public void setmTitleBGColor(int mTitleBGColor) {
+		this.mTitleBGColor = mTitleBGColor;
+	}
+
+	public int getmSelectedItemTextColor() {
+		return mSelectedItemTextColor;
+	}
+
+	public void setmSelectedItemTextColor(int mSelectedItemTextColor) {
+		this.mSelectedItemTextColor = mSelectedItemTextColor;
+	}
+
+	public int getmItemTextColor() {
+		return mItemTextColor;
+	}
+
+	public void setmItemTextColor(int mItemTextColor) {
+		this.mItemTextColor = mItemTextColor;
+	}
+
+	public int getmPickerBGColor() {
+		return mPickerBGColor;
+	}
+
+	public void setmPickerBGColor(int mPickerBGColor) {
+		this.mPickerBGColor = mPickerBGColor;
+	}
+
+	public Drawable getmPickerBGDrawable() {
+		return mPickerBGDrawable;
+	}
+
+	public void setmPickerBGDrawable(Drawable mPickerBGDrawable) {
+		this.mPickerBGDrawable = mPickerBGDrawable;
+	}
+
+	public String getmType() {
+		return mType;
+	}
+
+	public void setmType(String mType) {
+		this.mType = mType;
+	}
+	
+}

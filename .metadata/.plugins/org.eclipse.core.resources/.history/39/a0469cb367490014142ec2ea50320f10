@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="UiPickerView">
+        <attr name="type" format="enum">
+            <enum name="default"/>
+            <enum name="date"/>
+            <enum name="time"/>
+            <enum name="datetime"/>
+        </attr>
+    </declare-styleable>
+</resources>

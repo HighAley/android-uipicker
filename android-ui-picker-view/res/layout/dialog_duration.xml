@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="310dp"
+    android:layout_height="wrap_content"
+    android:background="@color/main_color_light">
+    <TextView android:id="@+id/title"
+        android:layout_width="310dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="12 Dec 2013"
+        android:background="@color/main_color"/>
+    <LinearLayout android:id="@+id/layout1"
+        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@id/title">
+     
+		<kankan.wheel.widget.WheelView android:id="@+id/hour"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="70dp"/>
+        <kankan.wheel.widget.WheelView android:id="@+id/mins"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="70dp"/>
+        
+    </LinearLayout>
+    <View android:id="@+id/rule01"
+        android:layout_width="310dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/layout1"
+        android:layout_marginTop="5dp"
+        android:background="@color/main_color"/>
+    <LinearLayout android:layout_width="310dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/rule01"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <Button android:id="@+id/btn_cancel"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight="1"
+	        android:text="@string/cancel"
+	        android:textSize="20sp"
+	        android:textColor="@color/main_color"
+	        android:background="@color/main_color_gray"/>
+        <View android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/main_color"/>
+        <Button android:id="@+id/btn_save"
+	       android:layout_width="0dp"
+	       android:layout_height="fill_parent"
+	       android:layout_weight="1"
+	       android:text="@string/save"
+	       android:textColor="@color/main_color"
+	       android:textSize="20sp"
+	       android:background="@color/main_color_gray"/>
+     </LinearLayout>
+
+</RelativeLayout>

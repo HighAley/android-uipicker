@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="UiPickerView">
+        <attr name="type" format="enum">
+            <enum name="default"/>
+            <enum name="date"/>
+            <enum name="time"/>
+            <enum name="datetime"/>
+        </attr>
+        <attr name="positiveButtonTextColor" format="color"/>
+        <attr name="negativeButtonTextColor" format="color"/>
+        <attr name="titleTextColor" format="color"/>
+    </declare-styleable>
+</resources>
